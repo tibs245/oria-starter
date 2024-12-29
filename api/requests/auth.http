@@ -1,0 +1,69 @@
+### POST request to subscribe user
+POST {{host}}:{{port}}/auth/create_credentials
+Content-Type: application/json
+
+{
+  "username": "tibs245",
+  "password": "my_secret_password"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201 when create user");
+    });
+%}
+
+###
+
+### POST request to subscribe auth profile
+POST {{host}}:{{port}}/auth/create_credentials
+Content-Type: application/json
+
+{
+  "username": "tibs244335",
+  "password": "my_secret_password"
+}
+
+> {%
+    client.test("Request fail with 400 BAD REQUEST", function () {
+        client.assert(response.status === 400, "Response status is not 400 BAD REQUEST");
+    });
+%}
+
+###
+
+
+### POST request to authentificate user
+POST {{host}}:{{port}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "password": "my_secret_password"
+}
+
+> {%
+    client.test("Request fail with 200 GOOD REQUEST", function () {
+        client.assert(response.status === 200, "Response status is not 400 BAD REQUEST");
+    });
+%}
+
+###
+
+
+### POST request to refresh token
+POST {{host}}:{{port}}/auth/refresh_token
+Content-Type: application/json
+
+{
+  "refresh_token": "v4.public.eyJpYXQiOiIyMDI0LTA4LTI1VDIwOjI0OjIyLjg3ODQyM1oiLCJzdWIiOiJyZWZyZXNoIiwianRpIjoiNGU5NGFlMzMtOWVlMy00MmQ5LWE4MGUtMzFiZGM2MGNhYWJiIiwidXNlcm5hbWUiOiJ0aWJzMjQ1IiwibmJmIjoiMjAyNC0wOC0yNVQyMDoyNDoyMi44Nzg0MjNaIiwiZXhwIjoiMjAyNC0wOC0yNlQyMDoyNDoyMi44Nzg0MjMrMDA6MDAifdDUHiLAMMzdS7ezjwW0yMNrQ54dDeNcOZZ6K7q6ot8Mmk8Fy0wUJ6uYekkrGa2EdkTGrYFxcDclcLWOa9EBqQg"
+}
+
+> {%
+    client.test("Request fail with 200 GOOD REQUEST", function () {
+        client.assert(response.status === 200, "Response status is not 400 BAD REQUEST");
+    });
+%}
+
+###
+

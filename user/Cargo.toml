@@ -1,0 +1,19 @@
+[package]
+name = "user-module"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+auth-module = { path = "../auth", features = [] }
+axum = { version = "0.7.5", optional = true }
+axum-extra = { version = "0.9.1", features = ["typed-header"], optional = true }
+mongodb = "3.0.0"
+serde = { version = "1.0.188", features = ["derive"] }
+thiserror = "2.0.7"
+
+[features]
+axum_router = ["dep:axum", "dep:axum-extra"]
+
+[dev-dependencies]
+mockall = "0.13.0"
+fake = { version = "2.9.2", features = ["derive", "dummy"] }

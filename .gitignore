@@ -1,0 +1,16 @@
+/target
+Secrets*.toml
+.shuttle-storage
+.idea
+.vscode
+
+.DS_Store
+*/**.DS_Store
+*/**/target
+*/**/.idea
+
+# Added by cargo
+#
+# already existing elements were commented out
+
+#/target

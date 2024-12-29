@@ -1,0 +1,10 @@
+### POST request to subscribe user
+POST {{host}}:{{port}}/user/subscribe
+Content-Type: application/json
+
+{
+    "username": "john_doe",
+    "email": "johndoe@example.com",
+    "password": "my_secret_password"
+}
+###
