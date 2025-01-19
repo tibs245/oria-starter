@@ -1,26 +1,31 @@
 use std::error::Error;
 use crate::datastore::{AuthDatastore, TokenDatastore};
-#[cfg(test)]
-use crate::datastore::{MockAuthDatastore, MockTokenDatastore};
 use crate::entities::error::AuthError;
 use crate::entities::{Token, UserCredentials};
 use crate::utils::auth_claims::AuthClaims;
 use crate::views::payload::{LoginPayload, RefreshTokenPayload};
 use crate::views::response::AuthBody;
+#[cfg(test)]
+use mockall::automock;
+#[cfg(test)]
+use crate::datastore::{MockAuthDatastore, MockTokenDatastore};
 
 pub mod is_valid_credentials;
 mod get_credentials_from_username;
 pub(crate) mod create_credentials;
 mod tokens;
 
+#[cfg_attr(test, automock)]
 pub trait AuthGetCredentialsService {
     fn get_credentials_from_username(&self, username: &str) -> impl std::future::Future<Output=Result<Option<UserCredentials>, Box<dyn Error + Send + Sync + 'static>>>;
 }
 
+#[cfg_attr(test, automock)]
 pub trait AuthCreateCredentialsService {
     fn create_credentials(&self, auth_payload: LoginPayload) -> impl std::future::Future<Output=Result<UserCredentials, Box<dyn Error + Send + Sync + 'static>>>;
 }
 
+#[cfg_attr(test, automock)]
 pub trait AuthValidCredentialsService {
     fn is_valid_credentials(&self, username: String, password: String) -> impl std::future::Future<Output=Result<UserCredentials, AuthError>>;
 }

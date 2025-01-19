@@ -1,6 +1,5 @@
 use crate::services::{UserGetService};
 use auth_module::views::error_response::handle_error;
-use auth_module::views::response::CredentialsPrivateDetails;
 use axum::http::StatusCode;
 use axum::response::ErrorResponse;
 use axum::{Extension, Json};

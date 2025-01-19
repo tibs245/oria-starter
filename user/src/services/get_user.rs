@@ -1,17 +1,14 @@
 use std::error::Error;
-use auth_module::datastore::{AuthDatastore, TokenDatastore};
 use auth_module::services::AuthGetCredentialsService;
-use auth_module::views::response::CredentialsPrivateDetails;
 use crate::datastore::UserDatastore;
 use crate::entities::error::UserError;
 use crate::services::{UserGetService, UserService};
 use crate::views::response::UserPrivateDetails;
 
-impl<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl> UserGetService
-for UserService<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl>
+impl<AuthServiceImpl, UserDatastoreImpl> UserGetService
+for UserService<AuthServiceImpl, UserDatastoreImpl>
 where
-    AuthDatastoreImpl: AuthDatastore + 'static + Clone + Send + Sync,
-    TokenDatastoreImpl: TokenDatastore + 'static + Clone + Send + Sync,
+    AuthServiceImpl: AuthGetCredentialsService + 'static + Clone + Send + Sync,
     UserDatastoreImpl: UserDatastore + 'static + Clone + Send + Sync,
 {
     async fn get_user(&self, username: &str) -> Result<UserPrivateDetails, Box<dyn Error + Send + Sync + 'static>> {

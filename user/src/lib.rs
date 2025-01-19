@@ -6,4 +6,5 @@ pub mod views;
 pub mod controller;
 pub(crate) mod datastore;
 pub mod services;
+#[cfg(feature = "axum_router")]
 pub mod user_router_builder;

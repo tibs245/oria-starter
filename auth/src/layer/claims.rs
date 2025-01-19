@@ -1,6 +1,5 @@
 use std::task::{Context, Poll};
-use axum::{async_trait, RequestPartsExt};
-use axum::body::{to_bytes, Body};
+use axum::RequestPartsExt;
 use axum::extract::FromRequestParts;
 use axum::http::{Request};
 use axum::http::request::Parts;
@@ -16,7 +15,7 @@ use crate::utils::auth_claims::{AuthClaims};
 use crate::utils::validate_token::{IntoClaims, TokenString};
 
 const ANONYMOUS_USERNAME: &str = "anonymous";
-#[async_trait]
+
 impl<S> FromRequestParts<S> for AuthClaims
 where
     S: Send + Sync,

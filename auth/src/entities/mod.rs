@@ -126,7 +126,7 @@ impl UserCredentials {
         Pbkdf2.hash_password(password.as_bytes(), &salt).unwrap().to_string()
     }
 
-    pub(crate) fn verify_password(&self, password_hash: &str) -> Result<(), AuthError> {
+    pub fn verify_password(&self, password_hash: &str) -> Result<(), AuthError> {
         let self_password_hash = PasswordHash::new(&self.password).map_err(|_| AuthError::WrongCredentials)?;
         Pbkdf2.verify_password(password_hash.as_bytes(), &self_password_hash).map_err(|_| AuthError::WrongCredentials)
     }

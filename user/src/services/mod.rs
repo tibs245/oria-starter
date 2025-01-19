@@ -1,30 +1,26 @@
-use crate::datastore::UserDatastore;
+use crate::datastore::{UserDatastore};
 use crate::views::user_payload::UserWithCredentialsPayload;
-use auth_module::datastore::{AuthDatastore, TokenDatastore};
 use auth_module::entities::UserCredentials;
-use auth_module::services::{
-    AuthService,
-};
-use auth_module::views::response::CredentialsPrivateDetails;
 use std::error::Error;
+use auth_module::datastore::AuthDatastore;
+use auth_module::services::{AuthCreateCredentialsService, AuthGetCredentialsService};
 use crate::views::response::UserPrivateDetails;
 
 pub mod add_user;
 pub mod get_user;
 
-pub struct UserService<AuthDatastoreImpl: AuthDatastore, TokenDatastoreImpl: TokenDatastore, UserDatastoreImpl: UserDatastore> {
+pub struct UserService<AuthServiceImpl, UserDatastoreImpl: UserDatastore> {
     user_datastore: UserDatastoreImpl,
-    auth_service: AuthService<AuthDatastoreImpl, TokenDatastoreImpl>,
+    auth_service: AuthServiceImpl,
 }
 
 impl<
-    AuthDatastoreImpl: AuthDatastore,
-    TokenDatastoreImpl: TokenDatastore,
+    AuthServiceImpl,
     UserDatastoreImpl: UserDatastore,
-> UserService<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl>
+> UserService<AuthServiceImpl, UserDatastoreImpl>
 {
     pub fn new(
-        auth_service: AuthService<AuthDatastoreImpl, TokenDatastoreImpl>,
+        auth_service: AuthServiceImpl,
         user_datastore: UserDatastoreImpl,
     ) -> Self {
         Self {
