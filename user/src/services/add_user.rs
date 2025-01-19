@@ -8,7 +8,7 @@ use auth_module::services::AuthCreateCredentialsService;
 use std::error::Error;
 
 impl<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl> UserAddService
-    for UserService<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl>
+for UserService<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl>
 where
     AuthDatastoreImpl: AuthDatastore + 'static + Clone + Send + Sync,
     TokenDatastoreImpl: TokenDatastore + 'static + Clone + Send + Sync,
@@ -20,7 +20,7 @@ where
     ) -> Result<UserCredentials, Box<dyn Error + Send + Sync + 'static>> {
         if self
             .user_datastore
-            .get_user_by_username(user_with_credential_payload.username.clone())
+            .get_user_by_username(&user_with_credential_payload.username)
             .await?
             .is_some()
         {

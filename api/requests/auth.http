@@ -43,6 +43,8 @@ Content-Type: application/json
 }
 
 > {%
+    client.global.set("auth_token", response.body.token);
+
     client.test("Request fail with 200 GOOD REQUEST", function () {
         client.assert(response.status === 200, "Response status is not 400 BAD REQUEST");
     });

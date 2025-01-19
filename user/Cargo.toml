@@ -10,6 +10,7 @@ axum-extra = { version = "0.9.1", features = ["typed-header"], optional = true }
 mongodb = "3.0.0"
 serde = { version = "1.0.188", features = ["derive"] }
 thiserror = "2.0.7"
+tokio = "1.42.0"
 
 [features]
 axum_router = ["dep:axum", "dep:axum-extra"]

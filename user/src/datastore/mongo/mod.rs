@@ -33,7 +33,7 @@ impl UserDatastore for MongoUserDatastore {
     }
 
     /// Returns an `Result<Option<User>, UserDatastoreError>` representing a user with the given username, or `None` if no such user exists.
-    async fn get_user_by_username(&self, username: String) -> Result<Option<User>, UserDatastoreError> {
+    async fn get_user_by_username(&self, username: &str) -> Result<Option<User>, UserDatastoreError> {
         self.collection.find_one(doc! { "username": username }).await.map_err(|_| UserDatastoreError::ProvidersError)
     }
 }

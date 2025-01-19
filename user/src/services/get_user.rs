@@ -1,17 +1,35 @@
 use std::error::Error;
 use auth_module::datastore::{AuthDatastore, TokenDatastore};
-use auth_module::views::response::UserPrivateDetails;
+use auth_module::services::AuthGetCredentialsService;
+use auth_module::views::response::CredentialsPrivateDetails;
 use crate::datastore::UserDatastore;
+use crate::entities::error::UserError;
 use crate::services::{UserGetService, UserService};
-
+use crate::views::response::UserPrivateDetails;
 
 impl<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl> UserGetService
 for UserService<AuthDatastoreImpl, TokenDatastoreImpl, UserDatastoreImpl>
-where AuthDatastoreImpl: AuthDatastore + 'static + Clone + Send + Sync,
-      TokenDatastoreImpl: TokenDatastore + 'static + Clone + Send + Sync,
-      UserDatastoreImpl: UserDatastore + 'static + Clone + Send + Sync
+where
+    AuthDatastoreImpl: AuthDatastore + 'static + Clone + Send + Sync,
+    TokenDatastoreImpl: TokenDatastore + 'static + Clone + Send + Sync,
+    UserDatastoreImpl: UserDatastore + 'static + Clone + Send + Sync,
 {
-    async fn get_user(&self, user_id: String) -> Result<UserPrivateDetails, Box<dyn Error + Send + Sync + 'static>> {
-        todo!()
+    async fn get_user(&self, username: &str) -> Result<UserPrivateDetails, Box<dyn Error + Send + Sync + 'static>> {
+        let (user_credential, user_profile) = tokio::join!(
+            self.auth_service.get_credentials_from_username(username),
+            self.user_datastore.get_user_by_username(username)
+        );
+
+        let user_credential = user_credential?;
+        let user_profile = user_profile?;
+
+        match (user_credential, user_profile) {
+            (Some(user_credential), Some(user_profile)) => {
+                Ok(UserPrivateDetails::from_credential_and_user_profile(user_credential, user_profile))
+            }
+            (None, Some(_)) => { Err(Box::new(UserError::NoCredentials)) }
+            (Some(_), None) => { Err(Box::new(UserError::NoProfile)) }
+            (None, None) => { Err(Box::new(UserError::NoSuchProfile)) }
+        }
     }
 }

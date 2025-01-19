@@ -12,7 +12,7 @@ pub enum UserDatastoreError {
     #[error("Unable processing request. Error with external services")]
     InternalError,
     #[error("The third-party service is not responding")]
-    ProvidersError
+    ProvidersError,
 }
 
 /// A trait representing a user data store for managing user information.
@@ -51,7 +51,7 @@ pub trait UserDatastore {
     /// # Errors
     ///
     /// If the user could not be added to the data store, an appropriate `UserDatastoreError` will be returned.
-    fn add_user(&self, user: User) -> impl std::future::Future<Output = Result<User, UserDatastoreError>> + Send;
+    fn add_user(&self, user: User) -> impl std::future::Future<Output=Result<User, UserDatastoreError>> + Send;
 
     /// Retrieves a user from the data store by their username.
     ///
@@ -64,5 +64,5 @@ pub trait UserDatastore {
     /// * `Ok(Some(user))` if the user was found.
     /// * `Ok(None)` if no user exists with the given username.
     /// * `Err(UserDatastoreError)` if an error occurred during retrieval.
-    fn get_user_by_username(&self, username: String) -> impl std::future::Future<Output = Result<Option<User>, UserDatastoreError>> + Send;
+    fn get_user_by_username(&self, username: &str) -> impl std::future::Future<Output=Result<Option<User>, UserDatastoreError>> + Send;
 }

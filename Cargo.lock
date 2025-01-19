@@ -3283,6 +3283,7 @@ dependencies = [
  "mongodb",
  "serde",
  "thiserror 2.0.7",
+ "tokio",
 ]
 
 [[package]]
